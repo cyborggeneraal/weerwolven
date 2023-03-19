@@ -1,1 +1,1 @@
-from flaskapp.resources.account import Login
+from flaskapp.resources.account import Login, Account
