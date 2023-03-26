@@ -78,6 +78,13 @@ def create_game(
 ) -> schemas.Game:
     return crud.create_game(db, game, current_user)
 
+@app.get("/games/host")
+def get_games_where_host( 
+    current_user: Annotated[schemas.User, Depends(get_current_user)], 
+    db: Session = Depends(database.get_db)
+) -> List[schemas.Game]:
+    return crud.get_games_by_host(db, current_user)
+
 @app.get("/games/{game_id}")
 def get_game_with_id(
     game_id: int,
@@ -92,12 +99,7 @@ def get_game_with_id(
         )
     return db_game
 
-@app.get("/games/host")
-def get_games_where_host( 
-    current_user: Annotated[schemas.User, Depends(get_current_user)], 
-    db: Session = Depends(database.get_db)
-) -> List[schemas.Game]:
-    return crud.get_games_by_host(db, current_user)
+
 
 @app.post("/games/{game_id}/add_player")
 def add_player(
