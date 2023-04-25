@@ -30,7 +30,7 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session 
         token_data = auth.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = crud.get_user_by_username(db, username=token_data.username)
+    user = crud.users.get_user_by_username(db, username=token_data.username)
     if user is None:
         raise credentials_exception
     return user
@@ -53,19 +53,19 @@ def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Sessio
         
 @app.post("/users")
 def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)) -> schemas.User:
-    db_user = crud.get_user_by_username(db, username=user.username)
+    db_user = crud.users.get_user_by_username(db, username=user.username)
     if db_user:
         raise HTTPException(status_code=400, detail="Username already registered")
-    return crud.create_user(db=db, user=user)
+    return crud.users.create_user(db=db, user=user)
 
 @app.get("/users/")
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(database.get_db)) -> List[schemas.User]:
-    users = crud.get_users(db, skip=skip, limit=limit)
+    users = crud.users.get_users(db, skip=skip, limit=limit)
     return users
 
 @app.get("/users/{user_id}")
 def read_user(user_id: int, db: Session = Depends(database.get_db)) -> schemas.User:
-    db_user = crud.get_user(db, user_id= user_id)
+    db_user = crud.users.get_user(db, user_id= user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
@@ -76,14 +76,14 @@ def create_game(
     current_user: Annotated[schemas.User, Depends(get_current_user)], 
     db: Session = Depends(database.get_db)
 ) -> schemas.Game:
-    return crud.create_game(db, game, current_user)
+    return crud.games.create_game(db, game, current_user)
 
 @app.get("/games/host")
 def get_games_where_host( 
     current_user: Annotated[schemas.User, Depends(get_current_user)], 
     db: Session = Depends(database.get_db)
 ) -> List[schemas.Game]:
-    return crud.get_games_by_host(db, current_user)
+    return crud.games.get_games_by_host(db, current_user)
 
 @app.get("/games/{game_id}")
 def get_game_with_id(
@@ -91,15 +91,13 @@ def get_game_with_id(
     current_user: Annotated[schemas.User, Depends(get_current_user)],
     db: Session = Depends(database.get_db)
 ) -> schemas.Game:
-    db_game = crud.get_game_by_id(db, game_id)
+    db_game = crud.games.get_game_by_id(db, game_id)
     if db_game.host is not current_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You are not the host of this game"
         )
     return db_game
-
-
 
 @app.post("/games/{game_id}/add_player")
 def add_player(
@@ -108,16 +106,15 @@ def add_player(
     current_user: Annotated[schemas.User, Depends(get_current_user)],
     db: Session = Depends(database.get_db)
 ) -> schemas.Game:
-    game = crud.get_game_by_id(db, game_id)
+    game = crud.games.get_game_by_id(db, game_id)
     if game.host is not current_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You are not the host of this game"
         )
-    crud.add_player(db, game, username)
+    crud.games.add_player(db, game, username)
     return game
     
-
 @app.get("/")
 def read_root(current_user: Annotated[schemas.User, Depends(get_current_user)]) -> str:
     return f"Hello, {current_user.username}"
