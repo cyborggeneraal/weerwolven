@@ -26,7 +26,7 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 def authenticate_user(db: Session, username: str, password: str) -> models.User | bool:
-    user = crud.get_user_by_username(db, username)
+    user = crud.users.get_user_by_username(db, username)
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
