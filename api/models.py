@@ -28,7 +28,6 @@ class Player(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String)
-    is_fake = Column(Boolean, default=True)
     game_id = Column(Integer, ForeignKey("game.id"))
     user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
     

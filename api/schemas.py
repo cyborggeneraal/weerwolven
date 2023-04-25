@@ -14,12 +14,25 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
-class Player(BaseModel):
+class PlayerBase(BaseModel):
     username: str
-    is_fake: bool
+
+class Player(PlayerBase):
+    is_fake: bool = True
+    
+    @classmethod
+    def from_orm(cls, obj):
+        obj_schema = super().from_orm(obj)
+        obj_schema.is_fake = obj.user_id == None  
+        return obj_schema
     
     class Config:
-        orm_mode = True    
+        orm_mode = True
+        
+class PlayerCreate(PlayerBase):
+    
+    class Config:
+        orm_mode = True
 
 class GameBase(BaseModel):
     pass
@@ -28,7 +41,7 @@ class GameGet(GameBase):
     id: int    
 
 class GameCreate(GameBase):
-    players: List[Player] | None = []
+    players: List[str] = []
     name: str
 
 class Game(GameBase):

@@ -23,14 +23,13 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def create_game(db: Session, game: schemas.GameCreate, host: schemas.User) -> models.Game:
     db_game = models.Game(host=host, name=game.name)
-    for player in game.players:
-        if isinstance(player, str):
-            db_game.players.add(player)
-        else:
-            db_game.players.add(get_user_by_username(player.username))
     db.add(db_game)
     db.commit()
     db.refresh(db_game)
+    schema_game = get_game_by_id(db_game.id)
+    for player_username in game.players:
+        add_player(db, schema_game, player_username)
+    
     return db_game
 
 def get_games_by_host(db: Session, host: schemas.User) -> List[models.Game]:
