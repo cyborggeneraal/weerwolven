@@ -115,11 +115,20 @@ Gebruik deze spelregels als je specifieke spelinteracties wilt opzoeken.
     De \ruleref{Dag acties} worden pas afgehandeld aan het einde van de \ruleref{Dagfase}, behalve de \ruleref{Burgermeester verkiezingen}.
     De \ruleref{Burgermeester verkiezingen} wordt afgehandeld tussen 17:00 en 17:30.
     \ruleitem{Stem acties} De spelers kunnen tijdens de \ruleref{Dagfase} stem acties uitvoeren voor \ruleref{Stemmingen}. 
-    Voor elke \hyperref{rule:Stemmingen}{Stemming} kan elke speler maar één stem actie uitvoeren. \textit{(Je kan ook op stem acties opjezelf uitvoeren.)}
+    Voor elke \hyperref[rule:Stemmingen]{Stemming} kan elke speler maar één stem actie uitvoeren. \textit{(Je kan ook op stem acties opjezelf uitvoeren.)}
+\end{rulesubsection}
+
+\begin{rulesubsection}{Verschillende toestanden}
+    \ruleitem{Toestanden} Iedereen bent op elk moment in het spel maar in één toestand. 
+    \textit{(Zorgt een effect voor dat de speler bij een ander toestand krijgt dan verliest hij de oude toestand.)}
+    \ruleitem{Levend} Iedereen begint in levend. \textit{(Levende mensen mogen praten met andere levende mensen.)}
+    \ruleitem{Vermoord} Deze toestand word je door moord acties. \textit{(Deze toestand komt alleen voor tijdens \ruleref{Acties afhandelen})}
+    \ruleitem{Uitgeschakeld} Alle \hyperref[rule:Vermoord]{Vermoorde} spelers worden na \ruleref{Acties afhandelen} direct uitgeschakeld.
+    Uitgeschakelde spelers mogen niet praten met \hyperref[rule:Levend]{Levende} spelers.
 \end{rulesubsection}
 
 \begin{rulesubsection}{Stemmingen}
-    \ruleitem{Stemmen} Voor elke \hyperref{rule:Stem acties}{Stem actie} krijgt een speler een stem. De stemmen hebben invloed op de uitkomst van de stemming.
+    \ruleitem{Stemmen} Voor elke \hyperref[rule:Stem acties]{Stem actie} krijgt een speler een stem. De stemmen hebben invloed op de uitkomst van de stemming.
     \ruleitem{Burgermeester verkiezingen} Als er aan het begin van de \ruleref{Dagfase} geen burgermeester is, komt er een burgermeester verkiezing in dezelfde \ruleref{Dagfase}
     om 17:00. Na \ruleref{Acties afhandelen} maakt de spelleider bekend welke speler \ruleref{Stem acties} heeft uitgevoerd op welke speler en wordt de speler wie het doelwit 
     is van de meeste \ruleref{Stem acties} de burgermeester.
@@ -128,8 +137,23 @@ Gebruik deze spelregels als je specifieke spelinteracties wilt opzoeken.
     \ruleitem{Lynch} Aan het einde van elke \ruleref{Dagfase} komt een lynch. Na \ruleref{Acties afhandelen} aan het einde van de \ruleref{Dagfase} maakt de \ruleref{Spelleider} bekend
     wie heeft gestemd op wie en wordt de speler met de meeste stemmen vermoord. Hier telt de stem van de burgermeester voor twee keer. Als er gelijkspel is dan als de burgermeester stemde
     op een speler waar het gelijkspel tussen is, dan wordt de speler op wie de burgermeester stemt vermoord. Anders wordt niemand vermoord.
-    \ruleitem{Foei niveau} Elke speler heeft aan het begin van het spel foei niveau 0. Bij elke Stemming wordt het foei niveau van alle spelers die geen \ruleref{Stem acties} heeft uitgevoerd
-    met 1 niveau verhoogd. Direct daarna krijgt de speler \ruleref{Foei stemmen}
-    \ruleitem{Foei stemmen} Elke keer als het \ruleref{Foei niveau} wordt verhoogd ontvangt de speler stemmen gelijk aan het \ruleref{Foei niveau}.
+    \ruleitem{Foei niveau} Elke speler heeft aan het begin van het spel foei niveau 0. Bij elke \hyperref[rule:Stemmingen]{Stemming} wordt het foei niveau van alle spelers die geen \ruleref{Stem acties} heeft uitgevoerd
+    met 1 niveau verhoogd, die spelers ontvangen daarna direct stemmen gelijk aan het foei niveau. \textit{(de spelers die geen \hyperref[rule:Stem acties]{Stem actie} hebben gedaan krijgen daarna direct \ruleref{Stemmen} gelijk aan zijn Foei niveau.)}
+\end{rulesubsection}
+
+\begin{rulesubsection}{Overwinning}
+    \ruleitem{Teams} In dit spel zijn er verschillende teams. Ieder speler hoort uitsluitend bij één team.
+    \textit{(Zorgt een effect voor dat de speler bij een ander team komt dan verlaat hij het oude team.
+    Hierdoor is het mogelijk dat zijn doel veranderd)}
+    \ruleitem{Einde van het spel} Het spel eindigt als minstens één speler zijn doel haalt, met uitzondering van spelers uit het \ruleref{Overige team}
+    zonder buitenstaander.
+    \ruleitem{Dorpelingen team} Het dorpelingen team is één van de \ruleref{Teams}. Alle spelers in het dorpelingen team winnen als alle spelers met
+    Weerwolf en alle spelers met Buitenstaander \ruleref{Uitgeschakeld} zijn. \textit{(Ook uitgeschakelde dorpelingen winnen.)}
+    \ruleitem{Weerwolven team} Het Weerwolven team is één van de \ruleref{Teams}. Alle spelers in het weerwolven team winnen als alle spelers
+    uit het \ruleref{Dorpelingen team} en alle spelers uit het \ruleref{Overige team} met Buitenstaander \ruleref{Uitgeschakeld} zijn. \textit{(Ook uitgeschakelde weerwolven.)}
+    \ruleitem{Overige team} Het overige team is één van de \ruleref{Teams}. Een speler in het overige team wint als hij zijn persoonlijke doel 
+    haalt voordat hij \ruleref{Uitgeschakeld} is. \textit{(Je kan niet winnen als team overige als je geen persoonlijke doel hebt.)}
+    \ruleitem{Persoonlijk doel} Als je het spel begint met een rol van het \ruleref{Overige team}, dan begin je met het persoonlijk doel die bij de rol staat.
+    Anders begin je zonder een persoonlijke doel. \textit{(Je hoeft het persoonlijke doel alleen halen als je in team overig zit.)}
 \end{rulesubsection}
 \end{document}
