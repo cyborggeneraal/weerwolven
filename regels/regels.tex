@@ -1,0 +1,135 @@
+\documentclass{article}
+
+\usepackage{graphicx}
+\usepackage{lipsum} % for dummy text
+\usepackage[shortlabels]{enumitem}
+
+\newenvironment{rulesubsection}[1]{
+    \subsection{#1} \label{rule:#1}
+    \begin{enumerate}[label=\thesubsection.\arabic{enumi}]
+}{
+    \end{enumerate}
+}
+
+\newcommand{\ruleitem}[1]{\item \label{rule:#1} \textbf{#1.}}
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Overleaf Example},
+    pdfpagemode=FullScreen,
+}
+\newcommand{\ruleref}[1]{\hyperref[rule:#1]{#1}}
+
+\usepackage{background}
+\backgroundsetup{contents=\includegraphics{background.jpg},opacity=0.6,angle=0,scale=0.7}
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \Huge
+        \textbf{Regels van weerwolven}
+
+        \vspace{1cm}
+        \textbf{Auteurs} \\
+        \vspace{0.5cm}
+        \Large
+        Alex van Tilburg \\
+        Daan van Turnhout \\
+        Marijn de Waard \\
+
+        \vfill
+        \includegraphics[scale=0.7]{logo.jpg}
+        \vfill
+    \end{center}
+\end{titlepage}
+
+\sffamily
+
+\section*{Introductie}
+Dit boek bevat the uitgebereide regels van weerwolven van wakkerdam.
+Als je het spel wilt leren, lees dan de algemene spelregels van weerwolven.
+Gebruik deze spelregels als je specifieke spelinteracties wilt opzoeken.
+\section{Algemene regels}
+\begin{rulesubsection}{Tegensprekende regels}
+    \ruleitem{Volgorde afhandeling} Als de regels elkaar tegenspreken dan krijgt de regel die hoger staat in het rijtje voorrang:
+    \begin{itemize}
+        \item wat de \ruleref{Spelleider} zegt
+        \item rollen
+        \item condities
+        \item de rest van de spelregels uit dit boek
+        \item de algemene spelregels
+    \end{itemize} 
+\end{rulesubsection}
+\begin{rulesubsection}{Informatie delen}
+    \ruleitem{Screenshots} Je mag nooit screenshots delen of berichten van andere mensen doorsturen.
+    \ruleitem{Praten} Je mag niet praten tijdens de \ruleref{Nachtfase}, behalve in groepen waar het aangegeven is.
+\end{rulesubsection}
+\begin{rulesubsection}{Onderhandelingen}
+    \ruleitem{Afspraken} Je mag afspraken maken met andere spelers, maar ze zijn nooit bindend.
+\end{rulesubsection}
+\begin{rulesubsection}{Spel structuur}
+    \ruleitem{Fases} Het spel bestaat uit een \ruleref{Dagfase}, \ruleref{Nachtfase}, \ruleref{Zonsopgang} en \ruleref{Zonsondergang}.
+    \ruleitem{Dagfase} De Dagfase begint wanneer de \ruleref{Spelleider} de algemene chat open zet. \textit{(Ook al is het 9:00 geweest.)}
+    De dagfase eindigt om 20:00. \textit{(Ook al heeft de \ruleref{Spelleider} de algemene chat nog niet gesloten.)}
+    \ruleitem{Nachtfase} De nachtfase begint wanneer de \ruleref{Spelleider} de algemene chat heeft gesloten. \textit{(Ook al is het 20:00 geweest.)}
+    De nachtfase eindigt om 9:00. \textit{(Ook al heeft de \ruleref{Spelleider} de chat nog niet geopend.)}
+    \ruleitem{Zonsopgang} Dit is de tijd na de \ruleref{Nachtfase} en voor de \ruleref{Dagfase}, waar de \ruleref{Spelleider} tijd nodig heeft om de \ruleref{Acties} te verwerken
+    en vervolgens de algemene chat open te zetten.
+    \ruleitem{Zonsondergang} Dit is de tijd na de \ruleref{Dagfase} en voor de \ruleref{Nachtfase}, waar de \ruleref{Spelleider} tijd nodig heeft om de algemene chat te sluiten,
+    stemmen van de lynch te tellen en de uitslag door te geven.
+\end{rulesubsection}
+
+\begin{rulesubsection}{Spelverloop}
+    \ruleitem{Spelleider} De spelleider is de persoon of zijn de personen die verantwoordelijk is voor de rollenverdeling,
+    \ruleref{Acties} verwerken, stemmen tellen, het openen en sluiten van de algemene chat en als er vragen of onduidelijkheden zijn over de regels.
+    \textit{(In de regels wordt naar de spelleider verwezen als enkelvoud en mannelijk ook al hoeft dat niet het geval te zijn.)}
+    \ruleitem{Acties doorgeven} De \ruleref{Acties} geef je door aan de \ruleref{Spelleider}. \textit{(Als je namen doorgeeft, geef ook de achternaam door
+    als meer mensen dezelfde voornaam hebben.)}
+    \ruleitem{Informatie verkrijgen} De informatie die je krijgt als gevolg van je \ruleref{Acties}, krijg je via de \ruleref{Spelleider} te horen.
+\end{rulesubsection}
+
+\section{Sleutel begrippen}
+\begin{rulesubsection}{Acties}
+    \ruleitem{Nacht acties} Hieronder vallen alle acties die gedurende de \ruleref{Nachtfase} worden uitgevoerd. 
+    Je moet de \ruleref{Acties doorgeven} voor het einde van de \ruleref{Nachtfase}. Je mag er maar één per \ruleref{Nachtfase} uitvoeren,
+    tenzij het een \ruleref{Vrije actie} is.
+    \ruleitem{Dag acties} Hieronder vallen alle acties die gedurende de \ruleref{Dagfase} worden uitgevoerd.
+    Je moet de \ruleref{Acties doorgeven} voor het einde van de \ruleref{Dagfase}. Je mag er maar één per \ruleref{Dagfase} uitvoeren,
+    tenzij het een \ruleref{Vrije actie} is.
+    \ruleitem{Vrije actie} De spelers kunnen meerdere vrije acties uitvoeren. \textit{(\ruleref{Stemmen} is een voorbeeld van een vrije actie.)}
+    \ruleitem{Acties afhandelen} De \ruleref{Nacht acties} worden pas afgehandeld aan het einde van de \ruleref{Nachtfase}.
+    De \ruleref{Dag acties} worden pas afgehandeld aan het einde van de \ruleref{Dagfase}, behalve de \ruleref{Burgermeester verkiezingen}.
+    De \ruleref{Burgermeester verkiezingen} wordt afgehandeld tussen 17:00 en 17:30.
+    \ruleitem{Stem acties} De spelers kunnen tijdens de \ruleref{Dagfase} stem acties uitvoeren voor \ruleref{Stemmingen}. 
+    Voor elke \hyperref{rule:Stemmingen}{Stemming} kan elke speler maar één stem actie uitvoeren. \textit{(Je kan ook op stem acties opjezelf uitvoeren.)}
+\end{rulesubsection}
+
+\begin{rulesubsection}{Stemmingen}
+    \ruleitem{Stemmen} Voor elke \hyperref{rule:Stem acties}{Stem actie} krijgt een speler een stem. De stemmen hebben invloed op de uitkomst van de stemming.
+    \ruleitem{Burgermeester verkiezingen} Als er aan het begin van de \ruleref{Dagfase} geen burgermeester is, komt er een burgermeester verkiezing in dezelfde \ruleref{Dagfase}
+    om 17:00. Na \ruleref{Acties afhandelen} maakt de spelleider bekend welke speler \ruleref{Stem acties} heeft uitgevoerd op welke speler en wordt de speler wie het doelwit 
+    is van de meeste \ruleref{Stem acties} de burgermeester.
+    Als er een gelijk spel is, dan wordt er geen burgermeester gemaakt.
+
+    \ruleitem{Lynch} Aan het einde van elke \ruleref{Dagfase} komt een lynch. Na \ruleref{Acties afhandelen} aan het einde van de \ruleref{Dagfase} maakt de \ruleref{Spelleider} bekend
+    wie heeft gestemd op wie en wordt de speler met de meeste stemmen vermoord. Hier telt de stem van de burgermeester voor twee keer. Als er gelijkspel is dan als de burgermeester stemde
+    op een speler waar het gelijkspel tussen is, dan wordt de speler op wie de burgermeester stemt vermoord. Anders wordt niemand vermoord.
+    \ruleitem{Foei niveau} Elke speler heeft aan het begin van het spel foei niveau 0. Bij elke Stemming wordt het foei niveau van alle spelers die geen \ruleref{Stem acties} heeft uitgevoerd
+    met 1 niveau verhoogd. Direct daarna krijgt de speler \ruleref{Foei stemmen}
+    \ruleitem{Foei stemmen} Elke keer als het \ruleref{Foei niveau} wordt verhoogd ontvangt de speler stemmen gelijk aan het \ruleref{Foei niveau}.
+\end{rulesubsection}
+\end{document}

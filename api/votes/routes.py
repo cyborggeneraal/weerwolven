@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 
 from api import database
+from api import votes
 from api.votes import schemas as votes_schemas
 from api.votes import crud as votes_crud
 
@@ -15,5 +16,5 @@ def view_votes(game_id: int, db: Session = Depends(database.get_db)) -> List[vot
     return votes_crud.get_votes_from_game_id(db, game_id)
 
 @router.post("/{game_id}")
-def post_votes(game_id: int, vote: votes_schemas.VoteCreate, db: Session = Depends(database.get_db)):
+def post_votes(game_id: int, vote: votes_schemas.VoteCreate, db: Session = Depends(database.get_db)) -> votes_schemas.Vote:
     return votes_crud.add_vote(db, game_id, vote)
