@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 \usepackage{lipsum} % for dummy text
 \usepackage[shortlabels]{enumitem}
+\usepackage{xifthen}
 
 \newenvironment{rulesubsection}[1]{
     \subsection{#1} \label{rule:#1}
@@ -12,6 +13,22 @@
 }
 
 \newcommand{\ruleitem}[1]{\item \label{rule:#1} \textbf{#1.}}
+\newcommand{\roleinv}{
+    
+    \textbf{Inventaris:}
+}
+\newcommand{\rolenaction}[1][]{
+
+    \textbf{Nacht actie{\normalfont\ifthenelse{\isempty{#1}}{}{ (#1)}}:}
+}
+\newcommand{\roledaction}{
+
+    \textbf{Dag actie:}
+}
+\newcommand{\rolecond}{
+
+    \textbf{Condities:}
+}
 
 \usepackage{geometry}
  \geometry{
@@ -104,6 +121,21 @@ Gebruik deze spelregels als je specifieke spelinteracties wilt opzoeken.
 
 \section{Sleutel begrippen}
 \begin{rulesubsection}{Acties}
+    \ruleitem{Acties uitvoeren} Om acties uit te voeren moet de speler \ruleref{Acties doorgeven}.
+    Ze worden dan toegevoegd aan \ruleref{Komende acties} bij de volgende \ruleref{Acties afhandelen} waar deze actie kan worden
+    uitgevoerd. \textit{(\ruleref{Nacht acties} kunnen bijvoorbeeld alleen worden afgehandeld tijdens \ruleref{Acties afhandelen} tijdens de \ruleref{Nachtfase})}
+    \ruleitem{Uitvoerder} Spelers kunnen \ruleref{Acties uitvoeren}. Deze speler wordt de uitvoerder genoemd.
+    \ruleitem{Doelwit} Bij veel acties hoort er een doelwit bij. Het doelwit is een andere speler, gekozen door de \ruleref{Uitvoerder},
+    tenzij het anders aangegeven is.
+    \ruleitem{Komende acties} Elke keer bij \ruleref{Acties afhandelen} is er een verzameling van komende acties die op een volgorde ligt.
+    De acties worden afgehandeld een voor een op die volgorde. Als een actie is afgehandeld wordt die van de komende acties weg gehaald.
+    De actie is dan \hyperref[rule:Gelukte acties]{gelukt}, tenzij anders gegeven.
+    \ruleitem{Gelukte acties} Elke keer bij \ruleref{Acties afhandelen} is er een verzameling van gelukte acties. Hierin zijn alle acties die afgehandeld zijn,
+    tenzij anders gegeven.
+    \ruleitem{Gefaalde acties} Hieronder vallen alle acties die afgehandeld zijn, maar niet onder de \ruleref{Gelukte acties} vallen.
+    \textit{(Die kan bijvoorbeeld gebeuren door \ruleref{Stoor acties})}
+    \ruleitem{Benodigheden} Bij sommige acties staan benodigheden aangegeven. Dit zijn voorwerpen uit de Inventaris die men moet hebben om de actie
+    uit te voeren. De \ruleref{Uitvoerder} verliest de voorwerpen ook als de actie lukt.
     \ruleitem{Nacht acties} Hieronder vallen alle acties die gedurende de \ruleref{Nachtfase} worden uitgevoerd. 
     Je moet de \ruleref{Acties doorgeven} voor het einde van de \ruleref{Nachtfase}. Je mag er maar één per \ruleref{Nachtfase} uitvoeren,
     tenzij het een \ruleref{Vrije actie} is.
@@ -114,15 +146,20 @@ Gebruik deze spelregels als je specifieke spelinteracties wilt opzoeken.
     \ruleitem{Acties afhandelen} De \ruleref{Nacht acties} worden pas afgehandeld aan het einde van de \ruleref{Nachtfase}.
     De \ruleref{Dag acties} worden pas afgehandeld aan het einde van de \ruleref{Dagfase}, behalve de \ruleref{Burgermeester verkiezingen}.
     De \ruleref{Burgermeester verkiezingen} wordt afgehandeld tussen 17:00 en 17:30.
+    \ruleitem{Moord acties} Bij deze actie wordt het \ruleref{Doelwit} \ruleref{Vermoord}.
+    \ruleitem{Kijk acties} Hieronder vallen alle acties waarbij \ruleref{Uitvoerder} informatie over het \ruleref{Doelwit} krijgt.
+    Het informatie kan bijvoorbeeld over de rol, conditie of \hyperref[rule:Teams]{Team} van het \ruleref{Doelwit} gaan.
+    \ruleitem{Stoor acties} Bij deze actie wordt alle acties van het \ruleref{Doelwit} van de Komende acties weg gehaald.
+    Het \ruleref{Doelwit} krijgt aan het begin van de volgende \ruleref{Dagfase} te horen dat hij gestoord is.
     \ruleitem{Stem acties} De spelers kunnen tijdens de \ruleref{Dagfase} stem acties uitvoeren voor \ruleref{Stemmingen}. 
-    Voor elke \hyperref[rule:Stemmingen]{Stemming} kan elke speler maar één stem actie uitvoeren. \textit{(Je kan ook op stem acties opjezelf uitvoeren.)}
+    Voor elke \hyperref[rule:Stemmingen]{Stemming} kan elke speler maar één stem actie uitvoeren. \textit{(Je kan ook het \ruleref{Doelwit} zijn van je eigen stem acties.)} 
 \end{rulesubsection}
 
 \begin{rulesubsection}{Verschillende toestanden}
-    \ruleitem{Toestanden} Iedereen bent op elk moment in het spel maar in één toestand. 
+    \ruleitem{Toestanden} Elke speler is op elk moment in het spel in maar één toestand. 
     \textit{(Zorgt een effect voor dat de speler bij een ander toestand krijgt dan verliest hij de oude toestand.)}
     \ruleitem{Levend} Iedereen begint in levend. \textit{(Levende mensen mogen praten met andere levende mensen.)}
-    \ruleitem{Vermoord} Deze toestand word je door moord acties. \textit{(Deze toestand komt alleen voor tijdens \ruleref{Acties afhandelen})}
+    \ruleitem{Vermoord} Deze toestand word je door \ruleref{Moord acties}. \textit{(Deze toestand komt alleen voor tijdens \ruleref{Acties afhandelen})}
     \ruleitem{Uitgeschakeld} Alle \hyperref[rule:Vermoord]{Vermoorde} spelers worden na \ruleref{Acties afhandelen} direct uitgeschakeld.
     Uitgeschakelde spelers mogen niet praten met \hyperref[rule:Levend]{Levende} spelers.
 \end{rulesubsection}
@@ -155,5 +192,15 @@ Gebruik deze spelregels als je specifieke spelinteracties wilt opzoeken.
     haalt voordat hij \ruleref{Uitgeschakeld} is. \textit{(Je kan niet winnen als team overige als je geen persoonlijke doel hebt.)}
     \ruleitem{Persoonlijk doel} Als je het spel begint met een rol van het \ruleref{Overige team}, dan begin je met het persoonlijk doel die bij de rol staat.
     Anders begin je zonder een persoonlijke doel. \textit{(Je hoeft het persoonlijke doel alleen halen als je in team overig zit.)}
+\end{rulesubsection}
+
+\section{Rollen}
+Hieronder staat een overzicht van alle rollen met de daar bijbehorende acties.
+\begin{rulesubsection}{Weerwolven team rollen}
+    \ruleitem{Besmettelijke oerwolf}
+    \rolecond Weerwolf
+    \roleinv $1\times$ Besmettings flesje
+    \rolenaction[besmettings flesje] Aan het einde van de \ruleref{Nachtfase}, als het \ruleref{Doelwit} van de Lunch actie
+    \ruleref{Vermoord} is dan wordt hij \ruleref{Levend} en krijgt hij Weerwolf en hoort hij bij het \ruleref{Weerwolven team}.
 \end{rulesubsection}
 \end{document}
