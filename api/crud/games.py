@@ -31,3 +31,12 @@ def add_player(db: Session, game: schemas.Game, username: str) -> models.Player:
     db.commit()
     db.refresh(db_player)
     return db_player
+
+def get_player(db: Session, game: schemas.Game, username: str) -> models.Player:
+    return db.query(models.Player).filter(models.Player.game_id == game.id).filter(models.Player.username == username).first()
+
+def set_role(db: Session, game: schemas.Game, username: str, role: str) -> None:
+    db_player: models.Player = get_player(db, game, username)
+    db_player.rol = role
+    db.commit()
+    return

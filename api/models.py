@@ -32,6 +32,8 @@ class Player(Base):
     username = Column(String)
     game_id = Column(Integer, ForeignKey("game.id"))
     user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
+    rol = Column(String, default="gewone burger")
+    team = Column(String, default="burger team")
     
     game = relationship("Game", back_populates="players")
     user = relationship("User", back_populates="players")
