@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import List
 from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped, mapped_column
@@ -7,61 +8,61 @@ from api.database import Base
 class User(Base):
     __tablename__ = "user"
 
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    username: Mapped[str] = mapped_column(unique=True, index=True)
+    hashed_password: Mapped[str] = mapped_column()
     
-    games = relationship("Game", back_populates="host")
-    players = relationship("Player", back_populates="user")
+    games: Mapped[List[Game]] = relationship(back_populates="host")
+    players: Mapped[List[Player]] = relationship(back_populates="user")
 
 class Game(Base):
     __tablename__ = "game"
     
-    id = Column(Integer, primary_key=True, index=True)
-    host_id = Column(Integer, ForeignKey("user.id"))
-    name = Column(String, nullable=True)
-    current_day = Column(Integer, default=0)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    host_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    name: Mapped[str] = mapped_column(nullable=True)
+    current_day: Mapped[int] = mapped_column(default=0)
     
-    host = relationship("User", back_populates="games")
-    players = relationship("Player", back_populates="game")
-    votes = relationship("Vote", back_populates="game")
+    host: Mapped[User] = relationship(back_populates="games")
+    players: Mapped[List[Player]] = relationship(back_populates="game")
+    votes: Mapped[Vote] = relationship(back_populates="game")
     
 class Player(Base):
     __tablename__ = "player"
     
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String)
-    game_id = Column(Integer, ForeignKey("game.id"))
-    user_id = Column(Integer, ForeignKey("user.id"), nullable=True)
-    rol = Column(String, default="gewone burger")
-    team = Column(String, default="burger team")
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    username: Mapped[str] = mapped_column()
+    game_id: Mapped[int] = mapped_column(ForeignKey("game.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True)
+    rol: Mapped[str] = mapped_column(default="gewone burger")
+    team: Mapped[str] = mapped_column(default="burger team")
     
-    game = relationship("Game", back_populates="players")
-    user = relationship("User", back_populates="players")
+    game: Mapped[Game] = relationship(back_populates="players")
+    user: Mapped[User] = relationship(back_populates="players")
     
 class Vote(Base):
     __tablename__ = "vote"
     
-    id = Column(Integer, primary_key=True, index=True)
-    vote_from = Column(String)
-    game_id = Column(Integer, ForeignKey("game.id"))
-    day = Column(Integer)
-    vote_type = Column(Integer)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    vote_from: Mapped[str] = mapped_column()
+    game_id: Mapped[int] = mapped_column(ForeignKey("game.id"))
+    day: Mapped[int] = mapped_column()
+    vote_type: Mapped[int] = mapped_column()
     # 0 for lynch
     # 1 for mayor
-    vote_to = Column(String)
+    vote_to: Mapped[str] = mapped_column()
     
-    game = relationship("Game", back_populates="votes")
+    game: Mapped[Game] = relationship(back_populates="votes")
 
 class Action(Base):
     __tablename__ = "action"
 
-    id = Column(Integer, primary_key=True, index=True)
-    player_id = Column(Integer, ForeignKey("player.id"))
-    name = Column(String)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    player_id: Mapped[int] = mapped_column(ForeignKey("player.id"))
+    name: Mapped[str] = mapped_column()
     day: Mapped[int] = mapped_column()
 
-    player = relationship("Player")
+    player: Mapped[Player] = relationship()
     player_targets : Mapped[List[Player]] = relationship(secondary="player_targets_table")
 
 player_targets_table = Table(
