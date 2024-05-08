@@ -4,14 +4,6 @@ from sqlalchemy.orm import Session
 
 from api import schemas, models, auth, crud
 
-def create_user(db: Session, user: schemas.UserCreate):
-    hashed_password = auth.get_password_hash(user.password)
-    db_user = models.User(username = user.username, hashed_password = hashed_password)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
 def create_game(db: Session, game: schemas.GameCreate, host: schemas.User) -> models.Game:
     db_game = models.Game(host=host, name=game.name)
     db.add(db_game)

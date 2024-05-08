@@ -7,35 +7,15 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from api import crud, models, schemas, database, auth, votes
+from api import crud, models, schemas, database, auth, votes, games
 from api.database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-app.include_router(votes.router)
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-        
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(database.get_db)) -> models.User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid authentication credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, auth.SECRET_KEY, algorithms=[auth.ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = auth.TokenData(username=username)
-    except JWTError:
-        raise credentials_exception
-    user = crud.users.get_user_by_username(db, username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user
+app.include_router(games.router)
+#app.include_router(votes.router)
 
 @app.post("/token")
 def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(database.get_db)):
@@ -72,51 +52,6 @@ def read_user(user_id: int, db: Session = Depends(database.get_db)) -> schemas.U
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
 
-@app.post("/games/")
-def create_game(
-    game: schemas.GameCreate, 
-    current_user: Annotated[schemas.User, Depends(get_current_user)], 
-    db: Session = Depends(database.get_db)
-) -> schemas.Game:
-    return crud.games.create_game(db, game, current_user)
-
-@app.get("/games/host")
-def get_games_where_host( 
-    current_user: Annotated[schemas.User, Depends(get_current_user)], 
-    db: Session = Depends(database.get_db)
-) -> List[schemas.Game]:
-    return crud.games.get_games_by_host(db, current_user)
-
-@app.get("/games/{game_id}")
-def get_game_with_id(
-    game_id: int,
-    current_user: Annotated[schemas.User, Depends(get_current_user)],
-    db: Session = Depends(database.get_db)
-) -> schemas.Game:
-    db_game = crud.games.get_game_by_id(db, game_id)
-    if db_game.host is not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You are not the host of this game"
-        )
-    return db_game
-
-@app.post("/games/{game_id}/add_player")
-def add_player(
-    game_id: int,
-    username: str,
-    current_user: Annotated[schemas.User, Depends(get_current_user)],
-    db: Session = Depends(database.get_db)
-) -> schemas.Game:
-    game = crud.games.get_game_by_id(db, game_id)
-    if game.host is not current_user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="You are not the host of this game"
-        )
-    crud.games.add_player(db, game, username)
-    return game
-    
 @app.get("/")
-def read_root(current_user: Annotated[schemas.User, Depends(get_current_user)]) -> str:
+def read_root(current_user: Annotated[schemas.User, Depends(auth.get_current_user)]) -> str:
     return f"Hello, {current_user.username}"
