@@ -40,3 +40,9 @@ def set_role(db: Session, game: schemas.Game, username: str, role: str) -> None:
     db_player.rol = role
     db.commit()
     return
+
+def set_team(db: Session, game: schemas.Game, username: str, team: str) -> None:
+    db_player = get_player(db, game, username)
+    db_player.team = team
+    db.commit()
+    return

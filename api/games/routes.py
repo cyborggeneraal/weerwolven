@@ -2,7 +2,7 @@ from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from api import schemas, crud, database, auth
+from api import schemas, crud, database, auth, games
 
 router = APIRouter(
     prefix="/games",
@@ -70,3 +70,18 @@ def set_role(
         )
     crud.games.set_role(db, game, username, role)
     return
+
+@router.post("/{game_id}/team/{username}")
+def set_team(
+    game_id: int,
+    username: str,
+    team: str,
+    current_user: Annotated[schemas.User, Depends(auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    game = crud.games.get_game_by_id(db, game_id)
+    games.raise_if_not_host(game, current_user)
+    crud.games.set_team(db, game, username, team)
+    return
+    
+    
