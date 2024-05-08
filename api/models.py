@@ -1,6 +1,6 @@
 from typing import List
 from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Table
-from sqlalchemy.orm import relationship, Mapped
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from api.database import Base
 
@@ -59,6 +59,7 @@ class Action(Base):
     id = Column(Integer, primary_key=True, index=True)
     player_id = Column(Integer, ForeignKey("player.id"))
     name = Column(String)
+    day: Mapped[int] = mapped_column()
 
     player = relationship("Player")
     player_targets : Mapped[List[Player]] = relationship(secondary="player_targets_table")
