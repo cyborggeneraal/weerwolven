@@ -84,4 +84,14 @@ def set_team(
     crud.games.set_team(db, game, username, team)
     return
     
+@router.post("/{game_id}/wakeup")
+def wakeup(
+    game_id: int,
+    current_user: Annotated[schemas.User, Depends(auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    game = crud.games.get_game_by_id(db, game_id)
+    games.raise_if_not_host(game, current_user)
+    games.wakeup(game)
+    return
     

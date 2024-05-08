@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from api.games.routes import router
+from api.games.management import *
 
 from api import models
 
