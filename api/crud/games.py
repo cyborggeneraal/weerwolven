@@ -46,3 +46,11 @@ def set_team(db: Session, game: schemas.Game, username: str, team: str) -> None:
     db_player.team = team
     db.commit()
     return
+
+def add_action(db: Session, game: schemas.Game, username: str, action_name: str, player_targets: List[str]) -> None:
+    db_player = get_player(db, game, username)
+    db_player_targets = list(map(lambda _username : get_player(db, game, _username), player_targets))
+    db_action = models.Action(player=db_player, name=action_name, player_targets=db_player_targets)
+    db.add(db_action)
+    db.commit()
+    return

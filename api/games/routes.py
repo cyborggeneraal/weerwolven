@@ -95,3 +95,16 @@ def wakeup(
     games.wakeup(game)
     return
     
+@router.post("/{game_id}/action")
+def add_action(
+    game_id: int,
+    username: str,
+    action_name: str,
+    player_targets: List[str],
+    current_user: Annotated[schemas.User, Depends(auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    game = crud.games.get_game_by_id(db, game_id)
+    games.raise_if_not_host(game, current_user)
+    crud.games.add_action(db, game, username, action_name, player_targets)
+    return

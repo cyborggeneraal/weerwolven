@@ -60,7 +60,7 @@ class Action(Base):
     player_id = Column(Integer, ForeignKey("player.id"))
     name = Column(String)
 
-    player = relationship("Player", back_populates="actions")
+    player = relationship("Player")
     player_targets : Mapped[List[Player]] = relationship(secondary="player_targets_table")
 
 player_targets_table = Table(
