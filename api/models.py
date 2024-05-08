@@ -1,5 +1,6 @@
-from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Boolean
-from sqlalchemy.orm import relationship
+from typing import List
+from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Table
+from sqlalchemy.orm import relationship, Mapped
 
 from api.database import Base
 
@@ -51,3 +52,20 @@ class Vote(Base):
     vote_to = Column(String)
     
     game = relationship("Game", back_populates="votes")
+
+class Action(Base):
+    __tablename__ = "action"
+
+    id = Column(Integer, primary_key=True, index=True)
+    player_id = Column(Integer, ForeignKey("player.id"))
+    name = Column(String)
+
+    player = relationship("Player", back_populates="actions")
+    player_targets : Mapped[List[Player]] = relationship(secondary="player_targets_table")
+
+player_targets_table = Table(
+    "player_targets_table",
+    Base.metadata,
+    Column("action_id", ForeignKey("action.id")),
+    Column("target_id", ForeignKey("player.id"))
+)
