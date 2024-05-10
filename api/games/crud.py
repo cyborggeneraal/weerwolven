@@ -4,6 +4,10 @@ from sqlalchemy.orm import Session
 
 from api import schemas, models, auth, crud
 
+ALIVE = "alive"
+KILLED = "killed"
+DEAD = "dead"
+
 def create_game(db: Session, game: schemas.GameCreate, host: schemas.User) -> models.Game:
     db_game = models.Game(host=host, name=game.name)
     db.add(db_game)
@@ -57,3 +61,15 @@ def add_action(db: Session, game: models.Game, username: str, action_name: str, 
 
 def get_actions_wakeup(db: Session, game: models.Game, day: int) -> List[models.Action]:
     return db.query(models.Action).filter(models.Action.player.has(game=game)).filter(models.Action.day == day).all()
+
+def kill(db: Session, game: models.Game, player: models.Player) -> None:
+    player.health_status = KILLED
+    db.commit()
+    return
+
+def clean_bodies(db: Session, game: models.Game) -> None:
+    db_players = db.query(models.Player).filter(models.Player.game == game).filter(models.Player.health_status == KILLED).all()
+    for db_player in db_players:
+        db_player.health_status = DEAD
+    db.commit()
+    return

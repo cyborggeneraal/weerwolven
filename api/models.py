@@ -34,8 +34,9 @@ class Player(Base):
     username: Mapped[str] = mapped_column()
     game_id: Mapped[int] = mapped_column(ForeignKey("game.id"))
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True)
-    rol: Mapped[str] = mapped_column(default="gewone burger")
+    role: Mapped[str] = mapped_column(default="gewone burger")
     team: Mapped[str] = mapped_column(default="burger team")
+    health_status: Mapped[str] = mapped_column(default="alive")
     
     game: Mapped[Game] = relationship(back_populates="players")
     user: Mapped[User] = relationship(back_populates="players")
