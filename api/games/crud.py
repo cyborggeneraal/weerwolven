@@ -54,3 +54,6 @@ def add_action(db: Session, game: models.Game, username: str, action_name: str, 
     db.add(db_action)
     db.commit()
     return
+
+def get_actions_wakeup(db: Session, game: models.Game, day: int) -> List[models.Action]:
+    return db.query(models.Action).filter(models.Action.player.has(game=game)).filter(models.Action.day == day).all()
