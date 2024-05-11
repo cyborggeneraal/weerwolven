@@ -73,3 +73,12 @@ def clean_bodies(db: Session, game: models.Game) -> None:
         db_player.health_status = DEAD
     db.commit()
     return
+
+def see_team(db: Session, game: models.Game, player: models.Player, target_players: List[models.Player]) -> models.Info:
+    return models.Info(
+        player = player,
+            name = "ziener_visioen",
+            day = game.current_day,
+            player_targets = target_players,
+            team_targets = [target_player.team for target_player in target_players]
+    )
