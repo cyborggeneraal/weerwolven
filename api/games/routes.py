@@ -38,6 +38,16 @@ def get_game_with_id(
         )
     return db_game
 
+@router.get("/{game_id}/players")
+def get_players(
+    game_id: int,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> List[schemas.Player]:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game, current_user)
+    return games.crud.get_players(db, db_game)
+
 @router.post("/{game_id}/add_player")
 def add_player(
     game_id: int,

@@ -39,6 +39,9 @@ def add_player(db: Session, game: schemas.Game, username: str) -> models.Player:
 def get_player(db: Session, game: schemas.Game, username: str) -> models.Player:
     return db.query(models.Player).filter(models.Player.game_id == game.id).filter(models.Player.username == username).first()
 
+def get_players(db: Session, game: models.Game) -> List[models.Player]:
+    return db.query(models.Player).filter(models.Player.game == game).all()
+
 def set_role(db: Session, game: schemas.Game, username: str, role: str) -> None:
     db_player: models.Player = get_player(db, game, username)
     db_player.rol = role

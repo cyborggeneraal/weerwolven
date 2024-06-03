@@ -18,13 +18,13 @@ class PlayerBase(BaseModel):
     username: str
 
 class Player(PlayerBase):
-    is_fake: bool = True
+    # is_fake: bool = True
     
-    @classmethod
-    def from_orm(cls, obj):
-        obj_schema = super().from_orm(obj)
-        obj_schema.is_fake = obj.user_id == None  
-        return obj_schema
+    # @classmethod
+    # def from_orm(cls, obj):
+    #     obj_schema = super().from_orm(obj)
+    #     obj_schema.is_fake = obj.user_id == None  
+    #     return obj_schema
     
     class Config:
         orm_mode = True
