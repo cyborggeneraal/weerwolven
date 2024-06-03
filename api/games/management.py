@@ -4,7 +4,8 @@ from api import models, games
 from sqlalchemy.orm import Session
 
 def wakeup(db: Session, game: models.Game) -> None:
-    db_actions = games.crud.get_actions_wakeup(db, game, game.current_day+1)
+    db_actions = games.crud.get_actions_wakeup(db, game, game.current_day)
+    print(db_actions)
 
     perform_lunch(db, game, db_actions)
     perform_vision(db, game, db_actions)
@@ -35,7 +36,12 @@ def perform_vision(db: Session, game: models.Game, actions: List[models.Action])
         if len(vision_action.player_targets) != 1:
             continue
         target = vision_action.player_targets[0]
-        new_info = games.crud.see_team(db, game, vision_action.player, [target])
+        new_info = models.Info(
+            player=vision_action.player,
+            action=vision_action,
+            day=game.current_day,
+            team_targets=[target.team]
+        )
         db.add(new_info)
     db.commit()
     return
