@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from api import schemas, models, auth, crud
+from api import schemas, models, crud
 
 ALIVE = "alive"
 KILLED = "killed"

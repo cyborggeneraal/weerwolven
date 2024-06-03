@@ -7,7 +7,7 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
-from api import crud, models, schemas, database, auth, votes, games
+from api import crud, models, schemas, database, votes, games, user
 from api.database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -19,15 +19,15 @@ app.include_router(games.router)
 
 @app.post("/token")
 def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: Session = Depends(database.get_db)):
-    user = auth.authenticate_user(db, username=form_data.username, password=form_data.password)
+    user = user.auth.authenticate_user(db, username=form_data.username, password=form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = auth.create_access_token(
+    access_token_expires = timedelta(minutes=user.auth.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = user.create_access_token(
         data={"sub": user.username}, 
         expires_delta=access_token_expires
     )    
@@ -53,5 +53,5 @@ def read_user(user_id: int, db: Session = Depends(database.get_db)) -> schemas.U
     return db_user
 
 @app.get("/")
-def read_root(current_user: Annotated[schemas.User, Depends(auth.get_current_user)]) -> str:
+def read_root(current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)]) -> str:
     return f"Hello, {current_user.username}"
