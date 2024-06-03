@@ -119,15 +119,14 @@ def add_action(
     games.crud.add_action(db, game, username, action_name, player_targets)
     return
 
-@router.post("/{game_id}/{playername}/action/vision")
+@router.post("/{game_id}/action/vision")
 def add_vision_action(
     game_id: int,
-    playername: str,
     action: games.action_schemas.VisionAction,
     current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
     db: Session = Depends(database.get_db)
 ) -> None:
     game = games.crud.get_game_by_id(db, game_id)
     games.raise_if_not_host(game, current_user)
-    games.add_vision_action(db, game, playername, action)
+    games.add_vision_action(db, game, action)
     return

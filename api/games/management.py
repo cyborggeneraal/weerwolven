@@ -16,10 +16,9 @@ def wakeup(db: Session, game: models.Game) -> None:
 def add_vision_action(
     db: Session, 
     game: models.Game, 
-    playername: str, 
     action: games.action_schemas.VisionAction
 ) -> None:
-    db_player = games.crud.get_player(db, game, playername)
+    db_player = games.crud.get_player(db, game, action.player.username)
     db_target = games.crud.get_player(db, game, action.target.username)
     db_action = models.Action(
         name="seer_vision", 
