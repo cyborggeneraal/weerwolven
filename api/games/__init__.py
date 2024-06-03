@@ -1,6 +1,5 @@
 from fastapi import HTTPException, status
-from api.games.routes import router
-from api.games import crud
+from api.games import crud, action_schemas, routes
 from api.games.management import *
 
 from api import models

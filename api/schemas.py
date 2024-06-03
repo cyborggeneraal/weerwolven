@@ -1,6 +1,6 @@
 from __future__ import annotations
-from pydantic import BaseModel, Field
-from typing import List, Any
+from pydantic import BaseModel 
+from typing import List
 from api import models
 
 class UserBase(BaseModel):
