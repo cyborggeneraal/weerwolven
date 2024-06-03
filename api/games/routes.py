@@ -105,20 +105,6 @@ def wakeup(
     games.wakeup(db, game)
     return
     
-@router.post("/{game_id}/action")
-def add_action(
-    game_id: int,
-    username: str,
-    action_name: str,
-    player_targets: List[str],
-    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
-    db: Session = Depends(database.get_db)
-) -> None:
-    game = games.crud.get_game_by_id(db, game_id)
-    games.raise_if_not_host(game, current_user)
-    games.crud.add_action(db, game, username, action_name, player_targets)
-    return
-
 @router.post("/{game_id}/action/vision")
 def add_vision_action(
     game_id: int,
@@ -129,4 +115,16 @@ def add_vision_action(
     game = games.crud.get_game_by_id(db, game_id)
     games.raise_if_not_host(game, current_user)
     games.add_vision_action(db, game, action)
+    return
+
+@router.post("/{game_id}/action/lunch")
+def add_lunch_action(
+    game_id: int,
+    action: games.action_schemas.LunchAction,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game, current_user)
+    games.add_lunch_action(db, db_game, action)
     return

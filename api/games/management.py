@@ -5,7 +5,6 @@ from sqlalchemy.orm import Session
 
 def wakeup(db: Session, game: models.Game) -> None:
     db_actions = games.crud.get_actions_wakeup(db, game, game.current_day)
-    print(db_actions)
 
     perform_lunch(db, game, db_actions)
     perform_vision(db, game, db_actions)
@@ -44,6 +43,22 @@ def perform_vision(db: Session, game: models.Game, actions: List[models.Action])
         db.add(new_info)
     db.commit()
     return
+
+def add_lunch_action(
+    db: Session, 
+    game: models.Game, 
+    action: games.action_schemas.LunchAction
+) -> None:
+    db_player = games.crud.get_player(db, game, action.player.username)
+    db_target = games.crud.get_player(db, game, action.target.username)
+    db_action = models.Action(
+        name="weerwolf_lunch",
+        player=db_player,
+        player_targets=[db_target],
+        day=action.day
+    )
+    db.add(db_action)
+    db.commit()
 
 def perform_lunch(db: Session, game: models.Game, actions: List[models.Action]) -> None:
     lunch_actions = [action for action in actions if action.name == "weerwolf_lunch"]

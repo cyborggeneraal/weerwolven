@@ -7,3 +7,6 @@ class BaseAction(BaseModel):
 
 class VisionAction(BaseAction):
     target: schemas.Player
+
+class LunchAction(BaseAction):
+    target: schemas.Player
