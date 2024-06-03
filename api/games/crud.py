@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from api import schemas, models, crud
+from api import schemas, models
 
 ALIVE = "alive"
 KILLED = "killed"
@@ -26,7 +26,7 @@ def get_game_by_id(db: Session, game_id: int) -> models.Game:
     return db.query(models.Game).filter(models.Game.id == game_id).first()
 
 def add_player(db: Session, game: schemas.Game, username: str) -> models.Player:
-    db_user = crud.users.get_user_by_username(db, username)
+    db_user = crud.crud.get_user_by_username(db, username)
     if not db_user:
         db_player = models.Player(username=username, game=game)
     else:
