@@ -47,7 +47,6 @@ class GameCreate(GameBase):
 class Game(GameBase):
     id: int
     host: User
-    players: List[Player]
     name: str
     
     class Config:
