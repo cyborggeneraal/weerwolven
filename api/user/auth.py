@@ -9,7 +9,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from api import crud, models, database
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
         
 SECRET_KEY = "1c6757108582787bb0e70ab50cd020307b60574e3df927d37d8da35e7080a50d"
 ALGORITHM = "HS256"
