@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import List
-from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Table
+from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Table, JSON
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 from api.database import Base
@@ -73,20 +73,10 @@ player_targets_table = Table(
     Column("target_id", ForeignKey("player.id"))
 )
 
-class Info(Base):
-    __tablename__ = "info"
-    
-    id: Mapped[int] = mapped_column(primary_key=True, index=True)
-    player: Mapped[Player] = relationship()
-    name: Mapped[str] = mapped_column()
-    day: Mapped[int] = mapped_column()
-    player_targets: Mapped[List[Player]] = relationship(secondary="player_targets_info_table")
-    team_targets: Mapped[List[str]] = relationship(secondary="player_targets")
-
 player_targets_info_table = Table(
     "player_targets_info_table",
     Base.metadata,
-    Column("info_id", ForeignKey("action.id")),
+    Column("info_id", ForeignKey("info.id")),
     Column("target_id", ForeignKey("player.id"))
 )
 
@@ -96,3 +86,14 @@ team_targets_info_table = Table(
     Column("info_id", ForeignKey("info.id")),
     Column("team", String)
 )
+
+class Info(Base):
+    __tablename__ = "info"
+    
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    player_id: Mapped[int] = mapped_column(ForeignKey("player.id"))
+    player: Mapped[Player] = relationship()
+    name: Mapped[str] = mapped_column()
+    day: Mapped[int] = mapped_column()
+    player_targets: Mapped[List[Player]] = relationship(secondary=player_targets_info_table)
+    team_targets: Mapped[List[Mapped[str]]] = mapped_column(JSON)
