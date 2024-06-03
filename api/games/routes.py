@@ -33,7 +33,7 @@ def get_game_with_id(
     db_game = games.crud.get_game_by_id(db, game_id)
     if db_game.host is not current_user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNuser.authORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You are not the host of this game"
         )
     return db_game
@@ -58,7 +58,7 @@ def add_player(
     game = games.crud.get_game_by_id(db, game_id)
     if game.host is not current_user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNuser.authORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You are not the host of this game"
         )
     games.crud.add_player(db, game, new_player.username)
@@ -75,25 +75,12 @@ def set_role(
     game = games.crud.get_game_by_id(db, game_id)
     if game.host is not current_user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNuser.authORIZED,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You are not the host of this game"
         )
     games.crud.set_role(db, game, username, role)
     return
 
-@router.post("/{game_id}/team/{username}")
-def set_team(
-    game_id: int,
-    username: str,
-    team: str,
-    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
-    db: Session = Depends(database.get_db)
-) -> None:
-    game = games.crud.get_game_by_id(db, game_id)
-    games.raise_if_not_host(game, current_user)
-    games.crud.set_team(db, game, username, team)
-    return
-    
 @router.post("/{game_id}/wakeup")
 def wakeup(
     game_id: int,
