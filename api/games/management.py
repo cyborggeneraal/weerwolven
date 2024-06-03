@@ -38,6 +38,7 @@ def perform_vision(db: Session, game: models.Game, actions: List[models.Action])
             player=vision_action.player,
             action=vision_action,
             day=game.current_day,
+            player_targets=[target],
             team_targets=[target.team]
         )
         db.add(new_info)

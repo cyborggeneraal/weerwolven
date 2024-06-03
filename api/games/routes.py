@@ -104,6 +104,23 @@ def add_vision_action(
     games.add_vision_action(db, game, action)
     return
 
+@router.post("/{game_id}/info/vision")
+def get_vision_info(
+    game_id: int,
+    player: schemas.Player,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> List[games.action_schemas.VisionInfo]:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    infos = games.crud.get_infos(db, db_game, player.username)
+    return [games.action_schemas.VisionInfo(
+        player=info.player,
+        day=info.day,
+        target=info.player_targets[0],
+        team=info.team_targets[0]
+    ) for info in infos
+    if info.action.name == "seer_vision"]
+
 @router.post("/{game_id}/action/lunch")
 def add_lunch_action(
     game_id: int,

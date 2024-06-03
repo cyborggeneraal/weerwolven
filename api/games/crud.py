@@ -65,6 +65,9 @@ def add_action(db: Session, game: models.Game, username: str, action_name: str, 
 def get_actions_wakeup(db: Session, game: models.Game, day: int) -> List[models.Action]:
     return db.query(models.Action).filter(models.Action.player.has(game=game)).filter(models.Action.day == day).all()
 
+def get_infos(db: Session, game: models.Game, playername: str) -> List[models.Info]:
+    return db.query(models.Info).filter(models.Info.player.has(game=game, username=playername)).all()
+
 def kill(db: Session, game: models.Game, player: models.Player) -> None:
     player.health_status = KILLED
     db.commit()

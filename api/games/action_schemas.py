@@ -8,5 +8,9 @@ class BaseAction(BaseModel):
 class VisionAction(BaseAction):
     target: schemas.Player
 
+class VisionInfo(BaseAction):
+    target: schemas.Player
+    team: str
+
 class LunchAction(BaseAction):
     target: schemas.Player
