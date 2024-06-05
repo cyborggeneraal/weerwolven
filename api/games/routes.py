@@ -57,7 +57,8 @@ def get_player(
 ) -> schemas.Player:
     db_game = games.crud.get_game_by_id(db, game_id)
     games.raise_if_not_host(db_game, current_user)
-    return games.crud.get_player(db, db_game, playername)
+    games.crud.get_player(db, db_game, playername)
+    return
 
 @router.post("/{game_id}/add_player")
 def add_player(
