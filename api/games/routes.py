@@ -43,10 +43,21 @@ def get_players(
     game_id: int,
     current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
     db: Session = Depends(database.get_db)
-) -> List[schemas.Player]:
+) -> List[schemas.PlayerGet]:
     db_game = games.crud.get_game_by_id(db, game_id)
     games.raise_if_not_host(db_game, current_user)
     return games.crud.get_players(db, db_game)
+
+@router.get("/{game_id}/player/{playername}")
+def get_player(
+    game_id: int,
+    playername: str,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> schemas.Player:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game, current_user)
+    return games.crud.get_player(db, db_game, playername)
 
 @router.post("/{game_id}/add_player")
 def add_player(
@@ -107,7 +118,7 @@ def add_vision_action(
 @router.post("/{game_id}/info/vision")
 def get_vision_info(
     game_id: int,
-    player: schemas.Player,
+    player: schemas.PlayerGet,
     current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
     db: Session = Depends(database.get_db)
 ) -> List[games.action_schemas.VisionInfo]:
@@ -143,4 +154,40 @@ def add_life_potion_action(
     db_game = games.crud.get_game_by_id(db, game_id)
     games.raise_if_not_host(db_game, current_user)
     games.add_life_potion_action(db, db_game, action)
+    return
+
+@router.post("/{game_id}/action/dead_potion")
+def add_dead_potion_action(
+    game_id: int,
+    action: games.action_schemas.DeadPotionAction,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game,current_user)
+    games.add_dead_potion(db, db_game, action)
+    return
+
+@router.post("/{game_id}/action/healing")
+def add_healing_action(
+    game_id: int,
+    action: games.action_schemas.HealingAction,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game,current_user)
+    games.add_healing(db, db_game, action)
+    return
+
+@router.post("/{game_id}/action/sniff")
+def add_sniff_action(
+    game_id: int,
+    action: games.action_schemas.SniffAction,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game,current_user)
+    games.add_sniff(db, db_game, action)
     return

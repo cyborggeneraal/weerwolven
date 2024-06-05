@@ -17,7 +17,16 @@ class User(UserBase):
 class PlayerBase(BaseModel):
     username: str
 
+class PlayerGet(PlayerBase):
+    pass
+
+    class Config:
+        orm_mode = True
+
 class Player(PlayerBase):
+    role: str
+    team: str
+    health_status: str
     # is_fake: bool = True
     
     # @classmethod
