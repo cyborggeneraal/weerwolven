@@ -7,13 +7,13 @@ Deze repository bevat een fastAPI app die een REST API server draait en met een 
 # API
 Deze app is gemaakt met FastAPI het biedt een documentatie van de API op de website. Om de server te runnen type
 ```console
-fastapi run debug.py
+fastapi run main.py
 ```
 (Pas op dat je fastapi moet hebben geinstalleerd bijvoorbeeld door `requirements.txt` te installeren)
 
 Als je het wil gebruiken in development gebruik dan
 ```console
-fastapi dev debug.py
+fastapi dev main.py
 ```
 
 # Depencies
