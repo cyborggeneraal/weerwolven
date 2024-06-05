@@ -14,3 +14,6 @@ class VisionInfo(BaseAction):
 
 class LunchAction(BaseAction):
     target: schemas.Player
+
+class LifePotionAction(BaseAction):
+    target: schemas.Player

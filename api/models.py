@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List
+from typing import List, Optional
 from sqlalchemy import ForeignKey, Integer, Column, String, ForeignKey, Table, JSON
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
@@ -95,6 +95,6 @@ class Info(Base):
     player: Mapped[Player] = relationship()
     action_id: Mapped[int] = mapped_column(ForeignKey("action.id"), server_default="0")
     action: Mapped[Action] = relationship()
-    day: Mapped[int] = mapped_column()
     player_targets: Mapped[List[Player]] = relationship(secondary=player_targets_info_table)
-    team_targets: Mapped[List[str]] = mapped_column(JSON)
+    team_targets: Mapped[Optional[List[str]]] = mapped_column(JSON)
+    success : Mapped[Optional[bool]] = mapped_column()

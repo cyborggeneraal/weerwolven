@@ -132,3 +132,15 @@ def add_lunch_action(
     games.raise_if_not_host(db_game, current_user)
     games.add_lunch_action(db, db_game, action)
     return
+
+@router.post("/{game_id}/action/life_potion")
+def add_life_potion_action(
+    game_id: int,
+    action: games.action_schemas.LifePotionAction,
+    current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
+    db: Session = Depends(database.get_db)
+) -> None:
+    db_game = games.crud.get_game_by_id(db, game_id)
+    games.raise_if_not_host(db_game, current_user)
+    games.add_life_potion_action(db, db_game, action)
+    return

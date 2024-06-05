@@ -73,6 +73,13 @@ def kill(db: Session, game: models.Game, player: models.Player) -> None:
     db.commit()
     return
 
+def revive(db: Session, game: models.Game, player: models.Player) -> bool:
+    revived = player.health_status == KILLED
+    if revived:
+        player.health_status = ALIVE
+    return revived
+
+
 def clean_bodies(db: Session, game: models.Game) -> None:
     db_players = db.query(models.Player).filter(models.Player.game == game).filter(models.Player.health_status == KILLED).all()
     for db_player in db_players:
