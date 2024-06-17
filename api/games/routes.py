@@ -43,7 +43,7 @@ def get_players(
     game_id: int,
     current_user: Annotated[schemas.User, Depends(user.auth.get_current_user)],
     db: Session = Depends(database.get_db)
-) -> List[schemas.PlayerGet]:
+) -> List[schemas.Player]:
     db_game = games.crud.get_game_by_id(db, game_id)
     games.raise_if_not_host(db_game, current_user)
     return games.crud.get_players(db, db_game)
