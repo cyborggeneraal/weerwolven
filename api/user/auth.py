@@ -31,12 +31,12 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def authenticate_user(db: Session, username: str, password: str) -> models.User | bool:
+def authenticate_user(db: Session, username: str, password: str) -> models.User | None:
     db_user = user.crud.get_user_by_username(db, username)
     if not db_user:
-        return False
+        return None
     if not verify_password(password, db_user.hashed_password):
-        return False
+        return None
     return db_user
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
@@ -49,7 +49,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(database.get_db)) -> models.User:
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session = database.SessionDep) -> models.User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid authentication credentials",

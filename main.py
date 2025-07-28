@@ -2,16 +2,14 @@ from fastapi import FastAPI, status
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from api import models, votes, games, user
-from api.database import engine
-
-models.Base.metadata.create_all(bind=engine)
+from api import user, database
+from api.models import *
 
 app = FastAPI()
 
 origins = ["*"]
 
-app.include_router(games.routes.router)
+#app.include_router(games.routes.router)
 #app.include_router(votes.router)
 app.include_router(user.router)
 
@@ -26,3 +24,7 @@ app.add_middleware(
 @app.get("/")
 def redirect_docs():
     return RedirectResponse(url="/docs", status_code=status.HTTP_302_FOUND)
+
+@app.on_event("startup")
+def on_startup():
+    database.create_db_and_tables()
