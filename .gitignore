@@ -2,6 +2,9 @@ __pycache__
 .venv
 api.db
 
+uv.lock
+.python-version
+
 regels/regels.*
 !regels/regels.tex
 !regels/regels.pdf
