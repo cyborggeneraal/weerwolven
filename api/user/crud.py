@@ -18,7 +18,7 @@ def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[models.User]
     db_users = db.exec(statement).all()
     return db_users
 
-def create_user(db: Session, user_data: schemas.UserCreate):
+def create_user(db: Session, user_data: models.UserCreate):
     hashed_password = user.auth.get_password_hash(user_data.password)
     db_user = models.User(username = user_data.username, hashed_password = hashed_password)
     db.add(db_user)

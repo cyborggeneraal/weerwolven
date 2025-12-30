@@ -1,18 +1,9 @@
 from __future__ import annotations
 from pydantic import BaseModel 
 from typing import List
-from api import models
 
-class UserBase(BaseModel):
-    username: str
+from sqlmodel import SQLModel, Field
 
-class UserCreate(UserBase):
-    password: str
-
-class User(UserBase):
-
-    class Config:
-        orm_mode = True
 
 class PlayerBase(BaseModel):
     username: str

@@ -8,9 +8,9 @@ class UserBase(SQLModel):
 class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
-    
-    #games: List[Game] = Relationship(back_populates="host")
-    #players: List[Player] = Relationship(back_populates="user")
+
+class UserPublic(UserBase):
+    pass
 
 class UserCreate(UserBase):
     password: str
