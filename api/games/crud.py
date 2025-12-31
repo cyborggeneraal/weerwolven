@@ -13,9 +13,9 @@ def create_game(db: Session, game: models.GameCreate, host: models.User) -> mode
     db.add(db_game)
     db.commit()
     db.refresh(db_game)
-    schema_game = get_game_by_id(db, db_game.id)
-    for player_username in game.players:
-        add_player(db, schema_game, player_username)
+#    schema_game = get_game_by_id(db, db_game.id)
+#    for player_username in game.players:
+#        add_player(db, schema_game, player_username)
     
     return db_game
 

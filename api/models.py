@@ -1,5 +1,3 @@
-from __future__ import annotations
-from typing import List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 class UserBase(SQLModel):
@@ -9,6 +7,8 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
 
+    hosting_games: list["Game"] = Relationship(back_populates="host")
+
 class UserPublic(UserBase):
     pass
 
@@ -16,23 +16,23 @@ class UserCreate(UserBase):
     password: str
 
 class GameBase(SQLModel):
-    id: int | None = Field(default=None, primary_key=True)
     name: str
 
 class Game(GameBase, table=True):
     current_day: int = Field(default=0)
+    id: int | None = Field(default=None, primary_key=True)
     
-    #host_id: int | None = Field(default=None, foreign_key="user.id")
-    #host: User = Relationship(back_populates="games")
+    host_id: int = Field(foreign_key="user.id")
+    host: User = Relationship(back_populates="hosting_games")
 
     #players: List[Player] = Relationship(back_populates="game")
     #votes: Mapped[Vote] = relationship(back_populates="game")
 
 class GamePublic(GameBase):
-    pass
+    id: int
 
 class GameCreate(GameBase):
-    name: str 
+    pass
     
 class Player(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)

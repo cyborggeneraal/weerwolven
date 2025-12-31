@@ -8,12 +8,12 @@ router = APIRouter(
     tags=["games"]
 )
 
-@router.post("/", response_model=models.Game)
+@router.post("/")
 def create_game(
     game: models.GameCreate, 
     current_user: Annotated[models.User, Depends(user.auth.get_current_user)], 
     db: database.SessionDep
-):
+) -> models.GamePublic:
     return games.crud.create_game(db, game, current_user)
 
 @router.get("/host", response_model=List[models.Game])
