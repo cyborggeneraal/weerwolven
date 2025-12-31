@@ -16,20 +16,21 @@ def create_game(
 ) -> models.GamePublic:
     return games.crud.create_game(db, game, current_user)
 
-@router.get("/host", response_model=List[models.Game])
+@router.get("/host")
 def get_games_where_host( 
     current_user: Annotated[models.User, Depends(user.auth.get_current_user)], 
     db: database.SessionDep
-):
+) -> List[models.GamePublic]:
     return games.crud.get_games_by_host(db, current_user)
 
-@router.get("/{game_id}", response_model=models.Game)
+@router.get("/{game_id}")
 def get_game_with_id(
     game_id: int,
     current_user: Annotated[models.User, Depends(user.auth.get_current_user)],
     db: database.SessionDep
-):
+) -> models.GamePublic | None:
     db_game = games.crud.get_game_by_id(db, game_id)
+    if not db_game: return None
     if db_game.host is not current_user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
