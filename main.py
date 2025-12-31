@@ -2,14 +2,14 @@ from fastapi import FastAPI, status
 from fastapi.responses import RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 
-from api import user, database
+from api import user, database, games
 from api.models import *
 
 app = FastAPI()
 
 origins = ["*"]
 
-#app.include_router(games.routes.router)
+app.include_router(games.routes.router)
 #app.include_router(votes.router)
 app.include_router(user.router)
 

@@ -2,13 +2,13 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from api import schemas, models, user
+from api import models, user
 
 ALIVE = "alive"
 KILLED = "killed"
 DEAD = "dead"
 
-def create_game(db: Session, game: schemas.GameCreate, host: schemas.User) -> models.Game:
+def create_game(db: Session, game: models.GameCreate, host: models.User) -> models.Game:
     db_game = models.Game(host=host, name=game.name)
     db.add(db_game)
     db.commit()
@@ -19,13 +19,13 @@ def create_game(db: Session, game: schemas.GameCreate, host: schemas.User) -> mo
     
     return db_game
 
-def get_games_by_host(db: Session, host: schemas.User) -> List[models.Game]:
+def get_games_by_host(db: Session, host: models.User) -> List[models.Game]:
     return db.query(models.Game).filter(models.Game.host == host).all()
 
 def get_game_by_id(db: Session, game_id: int) -> models.Game:
     return db.query(models.Game).filter(models.Game.id == game_id).first()
 
-def add_player(db: Session, game: schemas.Game, username: str) -> models.Player:
+def add_player(db: Session, game: models.Game, username: str) -> models.Player:
     db_user = user.crud.get_user_by_username(db, username)
     if not db_user:
         db_player = models.Player(username=username, game=game)
@@ -36,19 +36,19 @@ def add_player(db: Session, game: schemas.Game, username: str) -> models.Player:
     db.refresh(db_player)
     return db_player
 
-def get_player(db: Session, game: schemas.Game, username: str) -> models.Player:
+def get_player(db: Session, game: models.Game, username: str) -> models.Player:
     return db.query(models.Player).filter(models.Player.game_id == game.id).filter(models.Player.username == username).first()
 
 def get_players(db: Session, game: models.Game) -> List[models.Player]:
     return db.query(models.Player).filter(models.Player.game == game).all()
 
-def set_role(db: Session, game: schemas.Game, username: str, role: str) -> None:
+def set_role(db: Session, game: models.Game, username: str, role: str) -> None:
     db_player: models.Player = get_player(db, game, username)
     db_player.rol = role
     db.commit()
     return
 
-def set_team(db: Session, game: schemas.Game, username: str, team: str) -> None:
+def set_team(db: Session, game: models.Game, username: str, team: str) -> None:
     db_player = get_player(db, game, username)
     db_player.team = team
     db.commit()

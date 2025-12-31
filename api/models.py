@@ -15,16 +15,24 @@ class UserPublic(UserBase):
 class UserCreate(UserBase):
     password: str
 
-class Game(SQLModel, table=True):
+class GameBase(SQLModel):
     id: int | None = Field(default=None, primary_key=True)
-    name: str | None
+    name: str
+
+class Game(GameBase, table=True):
     current_day: int = Field(default=0)
     
-    host_id: int | None = Field(default=None, foreign_key="user.id")
+    #host_id: int | None = Field(default=None, foreign_key="user.id")
     #host: User = Relationship(back_populates="games")
 
     #players: List[Player] = Relationship(back_populates="game")
     #votes: Mapped[Vote] = relationship(back_populates="game")
+
+class GamePublic(GameBase):
+    pass
+
+class GameCreate(GameBase):
+    name: str 
     
 class Player(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)

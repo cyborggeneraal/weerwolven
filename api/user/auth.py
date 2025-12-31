@@ -47,7 +47,7 @@ def create_access_token(username: str, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return {"access_token": encoded_jwt, "token_type": "bearer"}
 
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session = database.SessionDep) -> models.User:
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: database.SessionDep) -> models.User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid authentication credentials",
